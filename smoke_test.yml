@@ -1,0 +1,21 @@
+- hosts: control_node
+  gather_facts: false
+  tasks:
+    - name: os_server_info
+      os_server_info:
+        server: lb
+      register: lb_instance
+
+    - name: Smoke test for muti-tier app
+      uri:
+        url: "http://{{ __instance.private_v4 }}/?name=root"
+        method: GET
+        return_content: yes
+      loop: "{{ lb_instance.openstack_servers }}"
+      loop_control:
+        loop_var: __instance
+      register: content
+    - name: Debug Content
+      debug:
+        msg: "{{ content }}"
+
