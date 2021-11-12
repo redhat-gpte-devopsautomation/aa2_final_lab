@@ -10,7 +10,7 @@
   tasks:
     - name: Collection instance info
       os_server_info:
-        cloud: "{{ guid }}-project"
+#        cloud: "{{ guid }}-project"
       register: instances
 
     - name: Build In-Memory inventory db
