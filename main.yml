@@ -61,7 +61,7 @@
 
 - name: Play to automate process
   hosts: database_servers:backend_servers:load_balancers
-#  become: yes
+  become: yes
   vars:
     satellite_activationkey: gpte-labs-rhel8
     satellite_org: prod
