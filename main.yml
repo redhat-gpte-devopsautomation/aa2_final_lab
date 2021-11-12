@@ -81,7 +81,7 @@
         line: "{{ item }}"
       loop:
         - PEERDNS=no
-        - "DNS1={{ hostvars[groups['control_nodes'][0]].ansible_default_ipv4.address }}"
+        - "DNS1={{ hostvars.localhost.ansible_default_ipv4.address }}"
       register: network_update
 
     - name: restart network manager
