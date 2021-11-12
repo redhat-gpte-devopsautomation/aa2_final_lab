@@ -72,7 +72,7 @@
           - 'network'
 #      delegate_facts: true
 #      delegate_to: localhost
-      connection: local
+#      connection: local
 
     - name: DNS IP updated
       lineinfile:
