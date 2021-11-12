@@ -1,0 +1,4 @@
+---
+# vars file for roles/lb
+load_balancer_packages:
+  - haproxy
