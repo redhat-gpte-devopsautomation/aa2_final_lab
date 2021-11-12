@@ -66,29 +66,29 @@
     satellite_activationkey: gpte-labs-rhel8
     satellite_org: prod
   tasks:
-    - name: Gather network facts
-      setup:
-        gather_subset:
-          - 'network'
+#    - name: Gather network facts
+#      setup:
+#        gather_subset:
+#          - 'network'
 #      delegate_facts: true
 #      delegate_to: localhost
-      connection: local
+#      connection: local
 
-    - name: DNS IP updated
-      lineinfile:
-        state: present
-        path: /etc/sysconfig/network-scripts/ifcfg-eth0
-        line: "{{ item }}"
-      loop:
-        - PEERDNS=no
-        - DNS1={{ hostvars.localhost.ansible_default_ipv4.address }}
-      register: network_update
+#    - name: DNS IP updated
+#      lineinfile:
+#        state: present
+#        path: /etc/sysconfig/network-scripts/ifcfg-eth0
+#        line: "{{ item }}"
+#      loop:
+#        - PEERDNS=no
+#        - DNS1={{ hostvars.localhost.ansible_default_ipv4.address }}
+#      register: network_update
 
-    - name: restart network manager
-      service:
-        name: NetworkManager
-        state: restarted
-      when: network_update.changed | bool
+#    - name: restart network manager
+#      service:
+#        name: NetworkManager
+#        state: restarted
+#      when: network_update.changed | bool
 
     - name: install katello-ca-consumer package
       yum:
