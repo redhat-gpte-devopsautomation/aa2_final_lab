@@ -1,4 +1,28 @@
 ---
+- name: In-Memory Inventory
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    guid: "{{ lookup('ENV','GUID') }}"
+    home: "{{ lookup('ENV','HOME') }}"
+    internal_domain: "example.com"
+  tasks:
+    - name: Collection instance info
+      os_server_info:
+        cloud: "{{ guid }}-project"
+      register: instances
+
+    - name: Build In-Memory inventory
+      add_host:
+        host: "{{ instance.name }}.{{ internal_domain }}"
+        group: "{{ instance.metadata.AnsibleGroup }}"
+        ansible_host: "{{ instance.private_v4 }}"
+        ssh_private_key_file: "{{ home }}/.ssh/{{ guid }}key.pem"
+      loop: "{{ instances.openstack_servers }}"
+      loop_control:
+        loop_var: instance
+
 - name: Apply OS configuration to all servers
   hosts: app_servers:database_servers:load_balancers
   become: true
