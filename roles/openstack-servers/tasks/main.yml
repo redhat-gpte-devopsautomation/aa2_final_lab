@@ -1,0 +1,60 @@
+---
+# tasks file for roles/openstack-servers
+- name: "Server instances state = {{ openstack_server_state }}"
+  os_server:
+    name: "{{ __server.instance_name }}"
+    state: "{{ openstack_server_state | default(__server.state) | default('present') }}"
+    image: "{{ __server.image }}"
+    flavor: "{{ __server.flavor }}"
+    key_name: "{{ __server.key_name }}"
+    wait: "{{ __server.wait | default(True) }}"
+    security_groups: "{{ __server.security_group_name }}"
+    delete_fip: "{{ __server.delete_fip | default(False) }}"
+    public_ip: "{{ __server.public_ip | default(False) }}"
+    meta: "AnsibleGroup={{ __server.AnsibleGroup }}"
+    nics:
+      - net-name: "{{ __server.network }}"
+    userdata: |
+      manage_resolv_conf: true
+      resolv_conf:
+        nameservers: {{ nameservers | to_json }}
+        
+  loop: "{{ openstack_servers }}"
+  loop_control:
+    loop_var: "__server"
+    label: "{{ __server.instance_name }}"
+  async: 600
+  poll: 0
+  register: create_sleeper
+
+- name: Wait for async instance creation
+  async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: wait
+  until:
+    - wait.finished
+  retries: 600
+  loop: "{{ create_sleeper.results }}"
+
+- when:
+  - openstack_server_state != 'absent' | default(true)
+  block:
+    - name: Get OpenStack server info
+      os_server_info:
+        server: "{{ __server.instance_name }}"
+      loop: "{{ openstack_servers }}"
+      loop_control:
+        loop_var: "__server"
+        label: "{{ __server.instance_name }}"
+      register: instances
+
+    - name: Wait for all servers to become available
+      wait_for:
+        host: "{{ __server.1.private_v4 }}"
+        port: 22
+        search_regex: OpenSSH
+        timeout: 600
+      loop: "{{ instances.results | subelements('openstack_servers') }}"
+      loop_control:
+        loop_var: "__server"
+      delegate_to: "{{ inventory_hostname }}"
