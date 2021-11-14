@@ -25,6 +25,7 @@
 
 - name: Apply OS configuration to all servers
   hosts: app_servers:database_servers:load_balancers
-  #become: true
+  become: true
+  connection: local
   roles:
     - host-updates
