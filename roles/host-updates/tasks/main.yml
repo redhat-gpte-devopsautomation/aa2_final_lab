@@ -5,7 +5,7 @@
     gather_subset:
       - "network"
   delegate_facts: true
-  delegate_to: "{{ groups['control_nodes'][0] }}"
+  delegate_to: "{{ groups['control_node'][0] }}"
   run_once: true
 
 - name: Insert DNS server IP address
@@ -15,7 +15,7 @@
     line: "{{ item }}"
   loop:
     - PEERDNS=no
-    - "DNS1={{ hostvars[groups['control_nodes'][0]].ansible_default_ipv4.address }}"
+    - "DNS1={{ hostvars[groups['control_node'][0]].ansible_default_ipv4.address }}"
   register: restart_nm
 
 - name: Restart NetworkManager
