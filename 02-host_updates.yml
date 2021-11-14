@@ -26,8 +26,5 @@
 - name: Apply OS configuration to all servers
   hosts: app_servers:database_servers:load_balancers
   become: true
-  become_user: root
-  become_method: sudo
-  connection: local
   roles:
     - host-updates
