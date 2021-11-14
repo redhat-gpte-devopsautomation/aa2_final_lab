@@ -1,108 +1,16 @@
 ---
-- name: In-Memory Inventory
-  hosts: localhost
-  connection: local
-  gather_facts: false
-  vars:
-    guid: "{{ lookup('ENV','GUID') }}"
-    home: "{{ lookup('ENV','HOME') }}"
-    internal_domain: "example.com"
-  tasks:
-    - name: Collection instance info
-      os_server_info:
-#        cloud: "{{ guid }}-project"
-      register: instances
-
-    - name: Build In-Memory inventory db
-      add_host:
-        host: "{{ instance.name }}.{{ internal_domain }}"
-        group: "{{ instance.metadata.AnsibleGroup }}"
-        ansible_host: "{{ instance.private_v4 }}"
-        ssh_private_key_file: "{{ home }}/.ssh/{{ guid }}key.pem"
-      when: instance.metadata.AnsibleGroup == "database_servers"
-      loop: "{{ instances.openstack_servers }}"
-      loop_control:
-        loop_var: instance
-    - name: Build In-Memory inventory backend
-      add_host:
-        host: "{{ instance.name }}.{{ internal_domain }}"
-        group: "{{ instance.metadata.AnsibleGroup }}"
-        ansible_host: "{{ instance.private_v4 }}"
-        ssh_private_key_file: "{{ home }}/.ssh/{{ guid }}key.pem"
-      when: instance.metadata.AnsibleGroup == "backend_servers"
-      loop: "{{ instances.openstack_servers }}"
-      loop_control:
-        loop_var: instance
-
-    - name: Build In-Memory inventory backend
-      add_host:
-        host: "{{ instance.name }}.{{ internal_domain }}"
-        group: "{{ instance.metadata.AnsibleGroup }}"
-        ansible_host: "{{ instance.private_v4 }}"
-        ssh_private_key_file: "{{ home }}/.ssh/{{ guid }}key.pem"
-      when: instance.metadata.AnsibleGroup == "load_balancers"
-      loop: "{{ instances.openstack_servers }}"
-      loop_control:
-        loop_var: instance
-
-
-  
-- name: Gather database facts  
+- name: Gather db facts
   hosts: database_servers
   gather_facts: true
 
 - name: Gather web facts
-  hosts: backend_servers
+  hosts: app_servers
   gather_facts: true
 
 - name: Gather app facts
   hosts: load_balancers
   gather_facts: true
 
-- name: Play to automate process
-  hosts: database_servers:backend_servers:load_balancers
-  become: yes
-  vars:
-    satellite_activationkey: gpte-labs-rhel8
-    satellite_org: prod
-  tasks:
-    - name: Gather network facts
-      setup:
-        gather_subset:
-          - 'network'
-      delegate_facts: true
-      delegate_to: "{{ groups['control_node'][0] }}"
-      run_once: true
-
-    - name: DNS IP updated
-      lineinfile:
-        state: present
-        path: /etc/sysconfig/network-scripts/ifcfg-eth0
-        line: "{{ item }}"
-      loop:
-        - PEERDNS=no
-        - "DNS1={{ hostvars[groups['control_node'][0]].ansible_default_ipv4.address }}"
-      register: network_update
-
-    - name: restart network manager
-      service:
-        name: NetworkManager
-        state: restarted
-      when: network_update.changed | bool
-
-    - name: install katello-ca-consumer package
-      yum:
-        name: http://satellite.example.com/pub/katello-ca-consumer-latest.noarch.rpm
-        state: present
-        disable_gpg_check: true
-
-    - name: register system and attach subs
-      redhat_subscription:
-        state: present
-        activationkey: "{{ satellite_activationkey }}"
-        org_id: "{{ satellite_org }}"
-        auto_attach: true
-#        force_register: yes
  
 - import_playbook: provision_database_tier.yml
 - import_playbook: provision_app_tier.yml

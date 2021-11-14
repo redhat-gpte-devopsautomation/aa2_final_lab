@@ -1,0 +1,39 @@
+---
+# tasks file for roles/host-updates
+
+- setup:
+    gather_subset:
+      - "network"
+  delegate_facts: true
+  delegate_to: "{{ groups['control_nodes'][0] }}"
+  run_once: true
+
+- name: Insert DNS server IP address
+  lineinfile:
+    state: present
+    path: /etc/sysconfig/network-scripts/ifcfg-eth0
+    line: "{{ item }}"
+  loop:
+    - PEERDNS=no
+    - "DNS1={{ hostvars[groups['control_nodes'][0]].ansible_default_ipv4.address }}"
+  register: restart_nm
+
+- name: Restart NetworkManager
+  service:
+    name: NetworkManager
+    state: restarted
+  when:
+    - restart_nm.changed
+
+- name: Install katello-ca-consumer RPM
+  yum:
+    name: "{{ satellite.katello_ca_rpm }}"
+    state: present
+    disable_gpg_check: true
+
+- name: register to satellite
+  redhat_subscription:
+    activationkey: "{{ satellite.activationkey }}"
+    org_id: "{{ satellite.org }}"
+    state: present
+    auto_attach: true

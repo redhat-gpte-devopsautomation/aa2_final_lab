@@ -1,0 +1,39 @@
+---
+- name: Create Openstack infrastructure servers
+  hosts: control_node
+  connection: local
+  roles:
+    - openstack-servers
+  vars:
+    nameservers: 
+      - "{{ hostvars.localhost.ansible_default_ipv4.address }}"
+    openstack_server_state: present
+    openstack_servers:
+      - instance_name: app1
+        image: rhel-8.3
+        key_name: "{{ GUID }}-keypair"
+        flavor: "GLOBAL-CPU_4_Memory_8192_Disk_30_flavor"
+        security_group_name: "{{ GUID }}-HostSG"
+        network: "{{ GUID }}-dev-network"
+        AnsibleGroup: app_servers
+      - instance_name: app2
+        image: rhel-8.3
+        key_name: "{{ GUID }}-keypair"
+        flavor: "GLOBAL-CPU_4_Memory_8192_Disk_30_flavor"
+        security_group_name: "{{ GUID }}-HostSG"
+        network: "{{ GUID }}-dev-network"
+        AnsibleGroup: app_servers
+      - instance_name: appdb1
+        image: rhel-8.3
+        key_name: "{{ GUID }}-keypair"
+        flavor: "GLOBAL-CPU_4_Memory_8192_Disk_30_flavor"
+        security_group_name: "{{ GUID }}-HostSG"
+        network: "{{ GUID }}-dev-network"
+        AnsibleGroup: database_servers
+      - instance_name: frontend
+        image: rhel-8.3
+        key_name: "{{ GUID }}-keypair"
+        flavor: "GLOBAL-CPU_4_Memory_8192_Disk_30_flavor"
+        security_group_name: "{{ GUID }}-HostSG"
+        network: "{{ GUID }}-dev-network"
+        AnsibleGroup: load_balancers
