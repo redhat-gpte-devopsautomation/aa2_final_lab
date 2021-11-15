@@ -29,7 +29,7 @@
         group: "{{ instance.metadata.AnsibleGroup }}"
         ansible_host: "{{ instance.private_v4 }}"
         ssh_private_key_file: "{{ home }}/.ssh/{{ guid }}key.pem"
-      when: instance.metadata.AnsibleGroup == "backend_servers"
+      when: instance.metadata.AnsibleGroup == "app_servers"
       loop: "{{ instances.openstack_servers }}"
       loop_control:
         loop_var: instance
@@ -52,7 +52,7 @@
   gather_facts: true
 
 - name: Gather web facts
-  hosts: backend_servers
+  hosts: app_servers
   gather_facts: true
 
 - name: Gather app facts
