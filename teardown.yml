@@ -98,7 +98,7 @@
         state: absent
 
 - name: Teardown app_servers flask configuration
-  hosts: backend_servers
+  hosts: app_servers
   become: true
   gather_facts: false
   tags:
