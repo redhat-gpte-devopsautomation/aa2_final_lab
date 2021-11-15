@@ -36,4 +36,5 @@
     activationkey: "{{ satellite_activation_key }}"
     org_id: "{{ satellite_org }}"
     state: present
+    force_register: yes
     auto_attach: true
