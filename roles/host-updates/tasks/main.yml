@@ -33,7 +33,7 @@
 
 - name: register to satellite
   redhat_subscription:
-    activationkey: "{{ satellite.activation_key }}"
-    org_id: "{{ satellite.org }}"
+    activationkey: "{{ satellite_activation_key }}"
+    org_id: "{{ satellite_org }}"
     state: present
     auto_attach: true
