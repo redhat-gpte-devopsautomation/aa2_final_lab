@@ -27,13 +27,13 @@
 
 - name: Install katello-ca-consumer RPM
   yum:
-    name: "{{ satellite.katello_ca_rpm }}"
+    name: "{{ satellite_katello_ca_rpm }}"
     state: present
     disable_gpg_check: true
 
 - name: register to satellite
   redhat_subscription:
-    activationkey: "{{ satellite.activationkey }}"
+    activationkey: "{{ satellite.activation_key }}"
     org_id: "{{ satellite.org }}"
     state: present
     auto_attach: true

@@ -1,6 +1,6 @@
 ---
 # vars file for roles/host-updates
-satellite_activationkey: gpte-labs-rhel8
+satellite_activation_key: gpte-labs-rhel8
 satellite_org: prod
 satellite.katello_ca_rpm: "http://satellite.example.com/pub/katello-ca-consumer-latest.noarch.rpm"
 dns_ipv4: "192.168.50.181" 
