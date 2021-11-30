@@ -1,0 +1,30 @@
+---
+
+- name: DNS IP control node overwrite
+  lineinfile:
+    state: present
+    path: /etc/sysconfig/network-scripts/ifcfg-eth0
+    line: "{{ item }}"
+  loop:
+    - PEERDNS=no
+    - DNS1={{ dns_control_node }}
+  register: network_update
+
+- name: restart network manager
+  service:
+    name: NetworkManager
+    state: restarted
+  when: network_update.changed | bool
+
+- name: install katello-ca-consumer package
+  yum:
+    name: "{{ satellite_katello_cert }}"
+    state: present
+    disable_gpg_check: true
+
+- name: register system and attach subs
+  redhat_subscription:
+    state: present
+    activationkey: "{{ satellite_activation_key }}"
+    org_id: "{{ satellite_org }}" 
+    auto_attach: true

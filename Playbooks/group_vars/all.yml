@@ -1,0 +1,7 @@
+---
+
+dns_control_node: "192.168.50.212"
+
+satellite_activation_key: gpte-labs-rhel8
+satellite_katello_cert: http://satellite.example.com/pub/katello-ca-consumer-latest.noarch.rpm
+satellite_org: prod

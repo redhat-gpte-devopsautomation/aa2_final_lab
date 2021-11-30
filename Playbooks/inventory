@@ -1,0 +1,17 @@
+[load_balancers]
+frontend ansible_host=frontend1."{{ domain }}"
+
+[app_servers]
+app-01 ansible_host=app1."{{ domain }}"
+app-02 ansible_host=app2."{{ domain }}"
+
+[database_servers]
+database-01 ansible_host=appdb1."{{ domain }}"
+
+[internal:children]
+load_balancers
+app_servers
+database_servers
+
+[internal:vars]
+domain=example.com

@@ -1,0 +1,16 @@
+---
+
+postgres_rhel8_repo: "https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
+
+postgres_users:
+  - name: flask
+    password: redhat
+    database: flask_db
+    state: present
+    priv: ALL
+
+postgres_databases:
+  - name: flask_db
+    owner: flask
+  - name: books_store
+    owner: flask

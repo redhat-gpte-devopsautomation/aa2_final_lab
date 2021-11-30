@@ -1,0 +1,21 @@
+---
+
+- hosts: all
+  become: true
+  roles:
+    - common
+
+- hosts: database_servers
+  become: true
+  roles:
+   - postgres
+
+- hosts: app_servers
+  become: true
+  roles:
+   - flask
+
+- hosts: load_balancers
+  become: true
+  roles:
+    - haproxy
