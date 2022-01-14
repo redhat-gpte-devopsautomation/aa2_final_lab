@@ -1,8 +1,11 @@
 ---
-- name: Hello World!
+- name: "Hello World!"
   hosts: all
 
   tasks:
-  - name: Hello World!
+  - name: "Hello World!"
     shell: echo "Hi! Tower is working!"
 
+  - name: "Check variable"
+    debug: 
+      msg: "GUID var is: {{ GUID }}"

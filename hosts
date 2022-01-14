@@ -1,3 +1,5 @@
+control ansible_connection=local
+
 [load_balancers]
 frontend1  ansible_ssh_host=frontend1."{{ GUID }}".internal
 
@@ -13,5 +15,3 @@ load_balancers
 app_servers
 database_servers
 
-[all:vars]
-GUID="{{ lookup('env', 'GUID') }}"
