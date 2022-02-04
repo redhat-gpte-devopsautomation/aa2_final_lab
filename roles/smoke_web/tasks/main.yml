@@ -1,0 +1,12 @@
+---
+# This won't guarantee that you will test each backend web server unless there is no other traffic
+- name: Check load balancers for correct response (once per backend web server)
+  uri:
+    url: "http://{{ hostvars[item[0]]['ansible_host'] }}/ping"
+    return_content: yes
+  until: '"alive" in result.content'
+  retries: 10
+  delay: 1
+  register: result
+  delegate_to: localhost
+  loop: "{{ load_balancers | product(app_servers) }}"

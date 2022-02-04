@@ -1,0 +1,12 @@
+---
+- name: Smoketest Postgres database from each app server to each database server
+  postgresql_ping:
+    db: flask_db
+    login_host: "{{ item }}"
+    login_user: flask
+    login_password: redhat
+    ssl_mode: disable
+  run_once: true
+  loop: "{{ database_servers }}"
+  tags:
+    - smoketest

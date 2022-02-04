@@ -1,0 +1,3 @@
+---
+app_servers: "{{ ( groups['app_servers'] | default([]) ) + ( groups['meta-app_servers_AnsibleGroup'] | default([]) ) }}"
+database_servers: "{{ ( groups['database_servers'] | default([]) ) + ( groups['meta-database_servers_AnsibleGroup'] | default([]) ) }}"
