@@ -4,6 +4,11 @@
     state: present
     key: "{{ postgres_rhel8_gpgkey }}"
 
+- name: Install Postgres repo
+  package:
+    name: "{{ postgres_rhel8_repo }}"
+    state: present
+
 - name: Enable Postgresql module
   dnf:
     name: "{{ postgres_module }}"
@@ -14,7 +19,6 @@
     name: "{{ __package }}"
     state: present
   loop: 
-    - "{{ postgres_rhel8_repo }}"        
     - "{{ postgres_packages }}"
     - "{{ postgres_library }}"
   loop_control:
@@ -23,7 +27,7 @@
 - name: Create service instance
   template:
     src: service_override.conf.j2
-    dst: "/etc/systemd/system/postgresql@{{ postgres_service_instance }}.service.d/override.conf"
+    dest: "/etc/systemd/system/postgresql@{{ postgres_service_instance }}.service.d/override.conf"
 
 - name: Check if Postgres initialized
   stat:
