@@ -1,15 +1,15 @@
 ---
 postgres_rhel8_repo: "https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
 postgres_rhel8_gpgkey: "https://download.postgresql.org/pub/repos/yum/RPM-GPG-KEY-PGDG"
-postgres_module: "@postgresql:10/server"
+postgres_module: "@postgresql:12/server"
 postgres_packages:
   - postgresql
   - postgresql-server 
   - postgresql-contrib 
   - postgresql-libs
 postgres_library: python3-psycopg2
-postgres_data_dir: /var/lib/pgsql/10/data
-postgres_service_instance: "10"
+postgres_data_dir: /var/lib/pgsql/12/data
+postgres_service_instance: "12"
 postgres_port: 5432
 postgres_user: postgres
 postgres_users: {}
