@@ -9,4 +9,4 @@
   delay: 1
   register: result
   delegate_to: localhost
-  loop: "{{ load_balancers | product(app_servers) }}"
+  loop: "{{ load_balancers | product(app_servers) | list }}"
