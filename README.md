@@ -11,6 +11,6 @@
 
 1. Create a workflow that will execute the following sequence. If any job fails, call destroy.yml
 ```
-provision.yml -> database.yml -> app.yml -> smoke_tests.yml
+tower.yml -> provision.yml -> database.yml -> app.yml -> smoke_tests.yml
                 -> load_balancers.yml ->
 ```
