@@ -7,16 +7,20 @@
   pre_tasks:
     - name: "Build server list"
       loop: "{{ groups['internal'] }}"
-      set_fact:
-        server:
-          name: "{{ item }}"
-          image: rhel-8.3
-          flavor: GLOBAL-CPU_4_Memory_8192_Disk_30_flavor
-          security_group: "{{ guid }}-HostSG"
-          network: "{{ guid }}-dev-network"
-          keypair: "{{ guid }}-keypair"
-          metadata: "AnsibleGroup=osp_instances,deployment_name=dev"
-        servers: "{{ servers + [ server ] }}"
+      block:
+        - name: Build server entry
+          set_fact:
+            server:
+              name: "{{ item }}"
+              image: rhel-8.3
+              flavor: GLOBAL-CPU_4_Memory_8192_Disk_30_flavor
+              security_group: "{{ guid }}-HostSG"
+              network: "{{ guid }}-dev-network"
+              keypair: "{{ guid }}-keypair"
+              metadata: "AnsibleGroup=osp_instances,deployment_name=dev"
+        - name: Add server entry to list
+          set_fact:
+            servers: "{{ servers + [ server ] }}"
     - name: Print list
       debug:
         var: servers
