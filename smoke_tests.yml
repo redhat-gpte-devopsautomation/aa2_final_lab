@@ -1,6 +1,6 @@
 ---
 - name: End to end smoke tests
-# Use host groups from hosts and metadata so override can be used in the dynamic inventory. Makes for a cleaner inventory
+  # Use groups from hosts and metadata so override can be used in the dynamic inventory. Makes for a cleaner inventory
   hosts: 
     - app_servers
     - meta-app_servers_AnsibleGroup
@@ -10,13 +10,13 @@
   become: true
   tags:
     - smoketest
+
   vars:
     app_servers: "{{ ( groups['app_servers'] | default([]) ) + ( groups['meta-app_servers_AnsibleGroup'] | default([]) ) }}"
     database_servers: "{{ ( groups['database_servers'] | default([]) ) + ( groups['meta-database_servers_AnsibleGroup'] | default([]) ) }}"
 
   tasks:
-
-    - name: Smoketest Postgres database
+    - name: Smoketest Postgres database from each app server to each database server
       postgresql_ping:
         db: flask_db
         login_host: "{{ item[1] }}"
@@ -25,7 +25,7 @@
         ssl_mode: disable
       delegate_to: "{{ item[0] }}"
       run_once: true
-      loop: "{{ app_servers | product(database_servers) }}"
+      loop: "{{ app_servers | product(database_servers) | list }}"
       tags:
         - smoketest
 
@@ -39,15 +39,16 @@
     - smoketest
   vars:
     app_servers: "{{ ( groups['app_servers'] | default([]) ) + ( groups['meta-app_servers_AnsibleGroup'] | default([]) ) }}"
+    load_balancers: "{{ ( groups['load_balancers'] | default([]) ) + ( groups['meta-load_balancers_AnsibleGroup'] | default([]) ) }}"
   tasks:
- 
-    - name: Check webserver for correct response
+    # This won't guarantee that you will test each backend web server unless there is no other traffic
+    - name: Check load balancers for correct response (once per backend web server)
       uri:
-        url: "http://{{ hostvars[item]['ansible_host'] }}/ping"
+        url: "http://{{ hostvars[item[0]]['ansible_host'] }}/ping"
         return_content: yes
       until: '"alive" in result.content'
       retries: 10
       delay: 1
       register: result
       delegate_to: localhost
-      loop: "{{ app_servers }}"
+      loop: "{{ load_balancers | product(app_servers) }}"

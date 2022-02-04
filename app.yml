@@ -1,9 +1,10 @@
 ---
 - name: Deploy, configure, and populate flask repo and virtualenv
-  # Use both host groups so override can be used in the dynamic inventory. Makes for a cleaner inventory
+  # Use groups from hosts and metadata so override can be used in the dynamic inventory. Makes for a cleaner inventory
   hosts: 
    - app_servers
    - meta-app_servers_AnsibleGroup
+   
   become: true
   gather_facts: false
   tags:
