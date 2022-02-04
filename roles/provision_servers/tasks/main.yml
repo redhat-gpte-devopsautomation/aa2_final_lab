@@ -2,16 +2,16 @@
   openstack.cloud.server: 
     state: absent
     cloud: "{{ guid }}-project"
-    name: "{{ item.name }}"
-    image: "{{ item.image }}"
-    key_name: "{{ item.keypair }}"
-    flavor: "{{ item.flavor }}"
-    security_groups: "{{ item.security_group }}"
+    name: "{{ item }}"
+    image: "{{ hostvars[item]['image'] }}"
+    key_name: "{{ hostvars[item]['keypair'] }}"
+    flavor: "{{ hostvars[item]['flavor'] }}"
+    security_groups: "{{ hostvars[item]['security_group'] }}"
     delete_fip: yes
     wait: no
     nics:
-      - net-name: "{{ item.network }}"
-    meta: "{{ item.metadata }}" 
+      - net-name: "{{ hostvars[item]['network'] }}"
+    meta: "{{ hostvars[item]['metadata'] }}" 
     userdata: |
       #!/bin/bash
-  loop: "{{ servers }}"
+  loop: "{{ groups['internal'] }}"
