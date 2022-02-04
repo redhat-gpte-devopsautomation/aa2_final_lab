@@ -10,5 +10,5 @@
 1. Create Templates for database.yml, app.yml, load_balancers.yml, smoke_tests.yml, and destroy.yml using the dynamic OpenStack inventory with privilege escalation
 
     ![JobTemplates](/.images/JobTemplates.png?raw=true "Job Templates")
-1. Create a workflow that will execute the following sequence. If any job fails, call destroy.yml
+1. Create a workflow that will execute the templates
     ![Workflow](/.images/Workflow.png?raw=true "Workflow")
