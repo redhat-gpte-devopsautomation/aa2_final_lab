@@ -1,4 +1,4 @@
 - name: Configure Tower DNS Server
-  hosts: localhost
+  hosts: meta-AnsibleGroup_towerfl
   roles:
     - dns
