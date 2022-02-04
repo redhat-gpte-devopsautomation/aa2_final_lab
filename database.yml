@@ -17,7 +17,11 @@
         owner: flask
       - name: books_store
         owner: flask
+    postgres_port: 5432
+    firewall_tcp_ports:
+      - "{{ postgres_port }}"
   roles:
     - dns
     - register_satellite
+    - firewall
     - postgres-server

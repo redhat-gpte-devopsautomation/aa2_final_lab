@@ -12,8 +12,11 @@
     flask_repo: https://github.com/tonykay/resource_hub.git
     flask_scm_ref: main
     flask_app_lauch_script: /usr/local/bin/launch_resource_hub
+    firewall_tcp_ports:
+      - 8080
 
   roles:
     - dns
     - register_satellite
+    - firewall
     - flask

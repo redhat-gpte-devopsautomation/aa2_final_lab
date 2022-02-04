@@ -6,8 +6,13 @@
 
   tags:
     - load_balancers
+  
+  vars:
+    firewall_tcp_port:
+      - 80
 
   roles:
     - dns
     - register_satellite
+    - firewall
     - haproxy

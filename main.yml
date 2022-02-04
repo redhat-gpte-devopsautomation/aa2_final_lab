@@ -1,5 +1,6 @@
 ---
-- include_playbook: app.yml
+- include_playbook: provision.yml
 - include_playbook: database.yml
+- include_playbook: app.yml
 - include_playbook: load_balancers.yml
 - include_playbook: smoke_tests.yml
