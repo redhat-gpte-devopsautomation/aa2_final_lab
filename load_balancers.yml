@@ -1,6 +1,8 @@
 ---
 - name: Deploy haproxy load balancer
-  hosts: load_balancers
+  hosts:
+    - load_balancers
+    - meta-load_balancers_AnsibleGroup
   gather_facts: false 
   become: true
 

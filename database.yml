@@ -1,6 +1,8 @@
 ---
 - name: Deploy, configure, and populate Postgres 10
-  hosts: database_servers
+  hosts: 
+    - database_servers
+    - meta-database_servers_AnsibleGroup
   become: true
   gather_facts: false
   tags:

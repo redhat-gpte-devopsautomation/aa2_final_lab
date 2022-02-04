@@ -1,6 +1,10 @@
 ---
 - name: End to end smoke tests
-  hosts: app_servers:database_servers
+  hosts: 
+    - app_servers
+    - meta-app_servers_AnsibleGroup
+    - database_servers
+    - meta-database_servers_AnsibleGroup
   gather_facts: true
   become: true
   tags:
@@ -11,17 +15,19 @@
     - name: Smoketest Postgres database
       postgresql_ping:
         db: flask_db
-        login_host: "{{ groups.database_servers[0] }}"
+        login_host: "{{ (groups.database_servers + groups.meta-database_servers_AnsibleGroup)[0] }}"
         login_user: flask
         login_password: redhat
         ssl_mode: disable
-      delegate_to: "{{ groups.app_servers[0] }}"
+      delegate_to: "{{ (groups.app_servers + meta-app_servers_AnsibleGroup)[0] }}"
       run_once: true
       tags:
         - smoketest
 
 - name: End to end smoke tests
-  hosts: app_servers
+  hosts:
+    - app_servers
+    - meta-app_servers_AnsibleGroup
   become: false
   gather_facts: false
   tags:
