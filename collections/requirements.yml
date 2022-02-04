@@ -1,3 +1,4 @@
 ---
-- name: openstack.cloud
-  source: https://galaxy.ansible.com
+collections:
+  - name: openstack.cloud
+    source: https://galaxy.ansible.com
