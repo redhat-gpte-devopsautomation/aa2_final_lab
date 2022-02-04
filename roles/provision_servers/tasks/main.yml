@@ -15,4 +15,4 @@
     meta: "{{ hostvars[item]['provision_information']['metadata'] | default(omit) }}" 
     userdata: |
       #!/bin/bash
-  loop: "{{ ( groups['internal'] | default([]) ) + ( groups['meta-internal_AnsibleGroup'] | default([]) ) }}"
+  loop: "{{ server_list }}"

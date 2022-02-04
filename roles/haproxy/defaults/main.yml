@@ -1,3 +1,4 @@
 ---
 load_balancer_packages:
   - haproxy
+app_servers: "{{ ( ( groups['app_servers'] | default([]) ) + ( groups['meta-app_servers_AnsibleGroup'] | default([]) ) ) }}"

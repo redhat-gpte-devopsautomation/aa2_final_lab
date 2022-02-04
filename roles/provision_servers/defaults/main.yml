@@ -1,2 +1,4 @@
 guid: ""
 provision_state: "present"
+inventory_group: "internal"
+server_list: "{{ ( groups[inventory_group] | default([]) ) + ( groups['meta-' + inventory_group + '_AnsibleGroup'] | default([]) ) }}"
