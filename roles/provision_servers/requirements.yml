@@ -1,2 +1,7 @@
 ---
-- name: openstack.cloud
+roles: []
+
+collections:
+  # Install a collection from Ansible Galaxy.
+  - name: openstack.cloud
+    source: https://galaxy.ansible.com
