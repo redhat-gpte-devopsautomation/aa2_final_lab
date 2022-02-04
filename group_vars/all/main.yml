@@ -2,3 +2,4 @@ dns_server: "192.168.50.107"
 satellite_server: "satellite.example.com"
 satellite_activationkey: gpte-labs-rhel8
 satellite_org: prod
+ansible_generate: "Ansible generated"
