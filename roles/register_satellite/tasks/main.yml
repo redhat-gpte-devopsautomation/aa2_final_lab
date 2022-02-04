@@ -1,0 +1,13 @@
+---
+- name: install katello-ca-consumer package
+  yum:
+    name: "http://{{ satellite_server }}/pub/katello-ca-consumer-latest.noarch.rpm"
+    state: present
+    disable_gpg_check: true
+
+- name: register system and attach subs
+  redhat_subscription:
+    state: present
+    activationkey: "{{ satellite_activationkey }}"
+    org_id: "{{ satellite_org }}"
+    auto_attach: true

@@ -1,0 +1,16 @@
+---
+- name: DNS IP updated
+  lineinfile:
+    state: present
+    path: /etc/sysconfig/network-scripts/ifcfg-eth0
+    line: "{{ item }}"
+  loop:
+    - PEERDNS=no
+    - DNS1={{ dns_server }}
+  register: network_update
+
+- name: restart network manager
+  service:
+    name: NetworkManager
+    state: restarted
+  when: network_update.changed | bool
