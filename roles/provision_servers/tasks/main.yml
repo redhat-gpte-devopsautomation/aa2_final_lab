@@ -1,5 +1,6 @@
 ---
 - name: Dump vars
+  loop: "{{ groups['internal'] }}"
   debug:
     msg: "{{ hostvars[item] }}"
 
