@@ -11,5 +11,7 @@
 
 
 1. Create a workflow
+```
 provision.yml -> database.yml -> app.yml -> smoke_tests.yml
               -> load_balancers.yml ->
+```
