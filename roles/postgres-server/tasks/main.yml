@@ -36,7 +36,7 @@
 
 - when: not r_postgres_init_dir_state.stat.exists
   name: Run Postgres initdb to initialize if postgres not initialized
-  command: "/usr/bin/postgresql-setup initdb --unit=postgresql@{{ postgres_service_instance }}"
+  command: "/usr/bin/postgresql-setup --initdb --unit=postgresql@{{ postgres_service_instance }}"
   notify: restart_postgres
 
 - name: Setup Postgres for remote password auth
