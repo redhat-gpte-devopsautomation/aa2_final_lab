@@ -16,3 +16,4 @@
   roles:
     - dns
     - register_satellite
+    - flask
