@@ -4,7 +4,7 @@
     state: present
     key: "{{ postgres_rhel8_gpgkey }}"
 
-- name: Enable Postgres 10 module
+- name: Enable Postgresql module
   dnf:
     name: "{{ postgres_module }}"
     state: present
