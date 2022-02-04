@@ -22,6 +22,6 @@
     cloud: "devstack"
   register: server_info
 
-- name: Debug:
+- name: Debug
   debug:
     var: server_info
