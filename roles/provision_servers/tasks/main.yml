@@ -9,10 +9,19 @@
     flavor: "{{ hostvars[item]['provision_information']['flavor'] }}"
     security_groups: "{{ hostvars[item]['provision_information']['security_group'] }}"
     delete_fip: yes
-    wait: no
+    wait: yes
     nics:
       - net-name: "{{ hostvars[item]['provision_information']['network'] }}"
     meta: "{{ hostvars[item]['provision_information']['metadata'] }}" 
     userdata: |
       #!/bin/bash
   loop: "{{ groups['internal'] }}"
+
+- name: Collect instance information
+  openstack.cloud.server_info:
+    cloud: "devstack"
+  register: server_info
+
+- name: Debug:
+  debug:
+    var: server_info
