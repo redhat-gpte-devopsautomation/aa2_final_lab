@@ -2,7 +2,7 @@
 - name: Create instances
   openstack.cloud.server: 
     state: present
-    cloud: "{{ guid }}-project"
+    cloud: "devstack"
     name: "{{ item }}"
     image: "{{ hostvars[item]['provision_information']['image'] }}"
     key_name: "{{ hostvars[item]['provision_information']['keypair'] }}"
