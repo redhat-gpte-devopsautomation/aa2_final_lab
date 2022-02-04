@@ -1,18 +1,18 @@
 ---
 - name: Create instances
   openstack.cloud.server: 
-    state: present
+    state: " {{ provision_state | default('present') }}"
     cloud: "devstack"
     name: "{{ item }}"
-    image: "{{ hostvars[item]['provision_information']['image'] }}"
-    key_name: "{{ hostvars[item]['provision_information']['keypair'] }}"
-    flavor: "{{ hostvars[item]['provision_information']['flavor'] }}"
-    security_groups: "{{ hostvars[item]['provision_information']['security_group'] }}"
+    image: "{{ hostvars[item]['provision_information']['image'] | default(omit) }}"
+    key_name: "{{ hostvars[item]['provision_information']['keypair'] | default(omit) }}"
+    flavor: "{{ hostvars[item]['provision_information']['flavor'] | default(omit) }}"
+    security_groups: "{{ hostvars[item]['provision_information']['security_group'] | default(omit) }}"
     delete_fip: yes
     wait: yes
     nics:
-      - net-name: "{{ hostvars[item]['provision_information']['network'] }}"
-    meta: "{{ hostvars[item]['provision_information']['metadata'] }}" 
+      - net-name: "{{ hostvars[item]['provision_information']['network'] | default(omit) }}"
+    meta: "{{ hostvars[item]['provision_information']['metadata'] | default(omit) }}" 
     userdata: |
       #!/bin/bash
   loop: "{{ groups['internal'] }}"

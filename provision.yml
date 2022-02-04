@@ -3,6 +3,7 @@
   hosts: localhost
   vars:
     guid: "6343"
+    provision_state: "present"
   roles:
     - provision_servers
   pre_tasks:
