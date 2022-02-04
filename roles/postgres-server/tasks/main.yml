@@ -4,7 +4,7 @@
     name: "{{ __package }}"
     state: present
   loop: 
-    - "{{ postgres_rhel7_repo }}"        
+    - "{{ postgres_rhel8_repo }}"        
     - "{{ postgres_packages }}"
     - "{{ postgres_library }}"
   loop_control:
