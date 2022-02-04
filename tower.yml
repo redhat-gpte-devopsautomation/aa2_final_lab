@@ -1,0 +1,4 @@
+- name: Configure Tower DNS Server
+  hosts: localhost
+  roles:
+    - dns
