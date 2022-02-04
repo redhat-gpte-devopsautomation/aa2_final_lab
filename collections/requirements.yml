@@ -1,0 +1,3 @@
+---
+- name: openstack.cloud
+  source: https://galaxy.ansible.com
