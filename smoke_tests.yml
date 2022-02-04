@@ -9,18 +9,21 @@
   gather_facts: true
   become: true
   tags:
-    - smoketest  
+    - smoketest
+  vars:
+    app_servers: "{{ ( groups['app_servers'] | default([]) ) + ( groups['meta-app_servers_AnsibleGroup'] | default([]) ) }}"
+    database_servers: "{{ ( groups['database_servers'] | default([]) ) + ( groups['meta-database_servers_AnsibleGroup'] | default([]) ) }}"
 
   tasks:
 
     - name: Smoketest Postgres database
       postgresql_ping:
         db: flask_db
-        login_host: "{{ ( ( groups.database_servers | default([]) ) + ( groups.meta-database_servers_AnsibleGroup | default([]) ) )[0] }}"
+        login_host: "{{ database_servers[0] }}"
         login_user: flask
         login_password: redhat
         ssl_mode: disable
-      delegate_to: "{{ ( ( groups.app_servers | default([]) ) + ( groups.meta-app_servers_AnsibleGroup | default([]) ) )[0] }}"
+      delegate_to: "{{ app_servers[0] }}"
       run_once: true
       tags:
         - smoketest
