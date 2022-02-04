@@ -29,6 +29,12 @@
     src: service_override.conf.j2
     dest: "/etc/systemd/system/postgresql@{{ postgres_service_instance }}.service.d/override.conf"
 
+- name: Create data directory
+  file:
+    path: "{{ postgres_data_dir }}"
+    state: directory
+    recurse: yes
+
 - name: Check if Postgres initialized
   stat:
     path: "{{ postgres_data_dir }}/PG_VERSION"
