@@ -1,0 +1,17 @@
+- name: Create instances
+  openstack.cloud.server: 
+    state: absent
+    cloud: "{{ guid }}-project"
+    name: "{{ item.name }}"
+    image: "{{ item.image }}"
+    key_name: "{{ item.keypair }}"
+    flavor: "{{ item.flavor }}"
+    security_groups: "{{ item.security_group }}"
+    delete_fip: yes
+    wait: no
+    nics:
+      - net-name: "{{ item.network }}"
+    meta: "{{ item.metadata }}" 
+    userdata: |
+      #!/bin/bash
+  loop: "{{ servers }}"

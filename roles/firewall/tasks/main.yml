@@ -1,0 +1,44 @@
+---
+- name: Install Firewalld
+  yum:
+    name: firewalld
+    state: latest
+
+- name: Start firewalld
+  service:
+    name: firewalld
+    enabled: yes
+    state: started
+
+- name: Open service port
+  when: firewall_services is defined
+  firewalld:
+    service: "{{ __service }}"
+    state: enabled
+    immediate: true
+    permanent: true
+  loop: "{{ firewall_services }}"
+  loop_control:
+    loop_var: __service
+
+- name: Open tcp port
+  when: firewall_tcp_ports is defined
+  firewalld:
+    port: "{{ __tcp_port }}/tcp"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  loop: "{{ firewall_tcp_ports }}"
+  loop_control:
+    loop_var: __tcp_port
+
+- name: Open tcp port
+  when: firewall_udp_ports is defined
+  firewalld:
+    port: "{{ __udp_port }}/udp"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  loop: "{{ firewall_udp_ports }}"
+  loop_control:
+    loop_var: __udp_port
