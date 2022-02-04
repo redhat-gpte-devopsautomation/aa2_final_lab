@@ -1,5 +1,6 @@
 ---
 postgres_rhel8_repo: "https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
+postgres_rhel8_gpgkey: "https://download.postgresql.org/pub/repos/yum/RPM-GPG-KEY-PGDG"
 postgres_packages:
   - postgresql10 
   - postgresql10-server 

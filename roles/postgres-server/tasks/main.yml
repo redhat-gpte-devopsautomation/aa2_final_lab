@@ -1,4 +1,9 @@
 ---
+- name: Install RPM key
+  rpm_key:
+    state: present
+    key: "{{ postgres_rhel8_gpgkey }}"
+    
 - name: Install Postgres packages
   package:
     name: "{{ __package }}"
