@@ -1,5 +1,6 @@
 ---
 - name: End to end smoke tests
+# Use host groups from hosts and metadata so override can be used in the dynamic inventory. Makes for a cleaner inventory
   hosts: 
     - app_servers
     - meta-app_servers_AnsibleGroup

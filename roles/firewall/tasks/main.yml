@@ -32,7 +32,7 @@
   loop_control:
     loop_var: __tcp_port
 
-- name: Open tcp port
+- name: Open udp port   # Typo from lab. Was tcp
   when: firewall_udp_ports is defined
   firewalld:
     port: "{{ __udp_port }}/udp"

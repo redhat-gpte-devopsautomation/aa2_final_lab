@@ -1,5 +1,6 @@
 ---
 - name: Deploy haproxy load balancer
+# Use both host groups so override can be used in the dynamic inventory. Makes for a cleaner inventory
   hosts:
     - load_balancers
     - meta-load_balancers_AnsibleGroup

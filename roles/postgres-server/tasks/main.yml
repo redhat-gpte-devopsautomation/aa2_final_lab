@@ -24,6 +24,11 @@
   loop_control:
     loop_var: __package
 
+- name: Create service override directory
+  file:
+    path: "/etc/systemd/system/postgresql@{{ postgres_service_instance }}.service.d"
+    state: directory
+
 - name: Create service instance
   template:
     src: service_override.conf.j2

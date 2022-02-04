@@ -1,5 +1,6 @@
 ---
 - name: Deploy, configure, and populate Postgres 10
+# Use both host groups so override can be used in the dynamic inventory. Makes for a cleaner inventory
   hosts: 
     - database_servers
     - meta-database_servers_AnsibleGroup
