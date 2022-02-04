@@ -1,5 +1,6 @@
 ---
 - name: Provision Final Lab Servers
+  hosts: localhost
   vars:
     guid: "6343"
   pre_tasks:
