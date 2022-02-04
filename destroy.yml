@@ -1,5 +1,5 @@
 ---
-- name: Provision Final Lab Servers
+- name: Delete Final Lab Servers
   hosts: localhost
   vars:
     guid: "6343"
