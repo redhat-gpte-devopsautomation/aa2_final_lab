@@ -1,23 +1,18 @@
 ---
-- name: Dump vars
-  loop: "{{ groups['internal'] }}"
-  debug:
-    msg: "{{ hostvars[item] }}"
-
 - name: Create instances
   openstack.cloud.server: 
     state: absent
     cloud: "{{ guid }}-project"
     name: "{{ item }}"
-    image: "{{ hostvars[item]['image'] }}"
-    key_name: "{{ hostvars[item]['keypair'] }}"
-    flavor: "{{ hostvars[item]['flavor'] }}"
-    security_groups: "{{ hostvars[item]['security_group'] }}"
+    image: "{{ hostvars[item]['provision_information']['image'] }}"
+    key_name: "{{ hostvars[item]['provision_information']['keypair'] }}"
+    flavor: "{{ hostvars[item]['provision_information']['flavor'] }}"
+    security_groups: "{{ hostvars[item]['provision_information']['security_group'] }}"
     delete_fip: yes
     wait: no
     nics:
-      - net-name: "{{ hostvars[item]['network'] }}"
-    meta: "{{ hostvars[item]['metadata'] }}" 
+      - net-name: "{{ hostvars[item]['provision_information']['network'] }}"
+    meta: "{{ hostvars[item]['provision_information']['metadata'] }}" 
     userdata: |
       #!/bin/bash
   loop: "{{ groups['internal'] }}"
