@@ -1,7 +1,7 @@
 ---
-- name: Create instances
+- name: Create/Destroy instances
   openstack.cloud.server: 
-    state: " {{ provision_state | default('present') }}"
+    state: "{{ provision_state | default('present') }}"
     cloud: "devstack"
     name: "{{ item }}"
     image: "{{ hostvars[item]['provision_information']['image'] | default(omit) }}"

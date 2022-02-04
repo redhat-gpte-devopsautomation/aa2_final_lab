@@ -3,7 +3,7 @@
   hosts: localhost
   vars:
     guid: "6343"
-    provision_state: "absent"
+    provision_state: absent
   roles:
     - provision_servers
             
