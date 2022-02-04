@@ -3,6 +3,7 @@
   hosts: localhost
   vars:
     guid: "6343"
+    servers: []
   pre_tasks:
     - name: "Build server list"
       loop: "{{ groups['internal'] }}"
