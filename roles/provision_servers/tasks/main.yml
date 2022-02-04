@@ -16,12 +16,3 @@
     userdata: |
       #!/bin/bash
   loop: "{{ groups['internal'] }}"
-
-- name: Collect instance information
-  openstack.cloud.server_info:
-    cloud: "devstack"
-  register: server_info
-
-- name: Debug
-  debug:
-    var: server_info
