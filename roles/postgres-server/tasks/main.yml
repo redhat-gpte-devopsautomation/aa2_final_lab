@@ -34,6 +34,8 @@
     path: "{{ postgres_data_dir }}"
     state: directory
     recurse: yes
+    owner: postgres
+    group: postgres
 
 - name: Check if Postgres initialized
   stat:
