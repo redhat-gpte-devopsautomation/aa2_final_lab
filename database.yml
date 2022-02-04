@@ -18,4 +18,6 @@
       - name: books_store
         owner: flask
   roles:
+    - dns
+    - register_satellite
     - postgres-server
