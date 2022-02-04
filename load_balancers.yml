@@ -11,7 +11,7 @@
     - load_balancers
   
   vars:
-    firewall_tcp_port:
+    firewall_tcp_ports:
       - 80
 
   roles:
