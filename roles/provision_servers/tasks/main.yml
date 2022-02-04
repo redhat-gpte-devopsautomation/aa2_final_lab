@@ -1,3 +1,8 @@
+---
+- name: Dump vars
+  debug:
+    msg: "{{ hostvars[item] }}"
+
 - name: Create instances
   openstack.cloud.server: 
     state: absent
