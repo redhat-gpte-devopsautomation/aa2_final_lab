@@ -8,4 +8,6 @@
     - load_balancers
 
   roles:
+    - dns
+    - register_satellite
     - haproxy

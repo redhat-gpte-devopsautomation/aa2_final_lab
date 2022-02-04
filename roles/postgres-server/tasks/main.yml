@@ -3,7 +3,11 @@
   rpm_key:
     state: present
     key: "{{ postgres_rhel8_gpgkey }}"
-    
+
+- name: Enable Postgres 10 module
+  dnf:
+    name: "{{ postgres_module }}"
+    state: present
 - name: Install Postgres packages
   package:
     name: "{{ __package }}"
