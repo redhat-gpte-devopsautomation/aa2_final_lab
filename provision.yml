@@ -17,5 +17,5 @@
           security_group: "{{ guid }}-HostSG"
           network: "{{ guid }}-dev-network"
           keypair: "{{ guid }}-keypair"
-          metadata: "{{ ['AnsibleGroup'] | product(hostvars[item]['group_names']) | map('join', '=') | join(',') }},deployment_name=dev"
+          metadata: "{{ hostvars[item]['group_names'] | product(['AnsibleGroup']) | map('join', '=') | join(',') }},deployment_name=final_lab"
             
