@@ -2,7 +2,7 @@
 - name: Dump vars
   loop: "{{ groups['internal'] }}"
   debug:
-    msg: "{{ hostvars[item]['ansible_facts'] }}"
+    msg: "{{ hostvars[item] }}"
 
 - name: Create instances
   openstack.cloud.server: 
