@@ -8,6 +8,7 @@
   dnf:
     name: "{{ postgres_module }}"
     state: present
+
 - name: Install Postgres packages
   package:
     name: "{{ __package }}"
@@ -19,32 +20,37 @@
   loop_control:
     loop_var: __package
 
+- name: Create service instance
+  template:
+    src: service_override.conf.j2
+    dst: "/etc/systemd/system/postgresql@{{ postgres_service_instance }}.service.d/override.conf"
+
 - name: Check if Postgres initialized
   stat:
-    path: "{{ postgres_10_data_dir }}/PG_VERSION"
+    path: "{{ postgres_data_dir }}/PG_VERSION"
   register: r_postgres_init_dir_state
 
 - when: not r_postgres_init_dir_state.stat.exists
   name: Run Postgres initdb to initialize if postgres not initialized
-  command: "{{ postgres_10_bin_path }}/postgresql-10-setup initdb"
+  command: "/usr/bin/postgresql-setup initdb --unit=postgresql@{{ postgres_service_instance }}"
   notify: restart_postgres
 
 - name: Setup Postgres for remote password auth
   template:
     src: pg_hba.conf.j2
-    dest: "{{ postgres_10_data_dir }}/pg_hba.conf"
+    dest: "{{ postgres_data_dir }}/pg_hba.conf"
   notify: restart_postgres
 
 - name: Setup Postgres to listen on network interfaces
   lineinfile:
-    dest: "{{ postgres_10_data_dir }}/postgresql.conf"
+    dest: "{{ postgres_data_dir }}/postgresql.conf"
     line: "listen_addresses = '*'"
     insertafter: "#listen_addresses"
   notify: restart_postgres
 
 - name: Setup Postgres as started and enabled on boot.
   service:
-    name: "{{ postgres_service }}"
+    name: "postgresql@{{ postgres_service_instance }}"
     state: "{{ postgres_service_state | default('started') }}"
     enabled: "{{ postgres_service_enabled | default(true) }}"
 
